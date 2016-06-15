@@ -1,0 +1,87 @@
+<script type="text/javascript" src="vendor/js/mobiscroll.custom-2.16.0.min.js"></script>
+
+<div ng-hide="session.getSessionContent()">
+    <h2>Loading Session Content</h2>
+</div>
+
+<div ng-hide="session.getSessionStarted()" ng-init="session.getContentAndStartSession()">
+    <div class="jumbotron text-center top-buffer20">
+        <p>Ready to begin?</p>
+        <button ng-click="" class="btn btn-primary">Start Now</button>
+    </div>
+</div>
+
+<navbar class="navbar">
+<a ng-href="/#"><i class="glyphicon glyphicon-chevron-left col-md-3 col-sm-3 col-xs-3"></i></a>
+<span>Weekly Check In</span>
+</navbar>
+
+<div ng-show="session.getSessionStarted()" class="container-fluid">
+    <div ng-repeat="item in session.getSessionContent()">
+        <div ng-show="session.questionVisible(item.branching_logic,item.evaluatedLogic,$index)" id="question-{{$index}}">
+            <div class="question top-buffer20" ng-bind-html="session.convertHtmlContent(item.label)"></div>
+
+      
+
+            <div ng-if="item.type == 'radio' || item.type == 'checkbox'"
+                 class="{{item.type}}"
+                 ng-repeat="choice in item.choices">
+
+                <label class="btn btn-info btn-round col-md-12 col-sm-12 col-xs-12 top-buffer5">
+                    <div class="col-sm-1 col-xs-1 col-md-1 text-left">
+                        <input ng-click="session.makeSelection(item.label, choice)" type="{{item.type}}" name="{{item.variable}}" value="{{$index+1}}">
+                    </div>
+                    <div class="col-md-10 col-xs-10 col-sm-10 text-left session-option">{{session.stripIntegrationPoints(choice)}}</div>
+                </label>
+            </div>
+
+            <div ng-if="item.type == 'radioHorizontal' || item.type == 'checkboxHorizontal'"
+                 class="{{item.type}}"
+                 ng-repeat="choice in item.choices">
+            <div class="row">
+<!--             <div class="col-md-6 col-sm-6">{{session.stripIntegrationPoints(choice)}}</div>
+            <div class="col-md-6 col-sm-6">{{session.stripIntegrationPoints(choice)}}</div> -->
+            </div>
+                <label class="btn btn-info btn-round top-buffer5" style="width:{{100/item.choices}}%;">
+                    <div class="col-sm-1 col-xs-1 col-md-1 text-left">
+                        <input ng-click="session.makeSelection(item.label, choice)" type="{{item.type}}" name="{{item.variable}}" value="{{$index+1}}">
+                    </div>
+                </label>
+            </div>
+            <div class="clearfix"></div>
+
+            <div ng-if="item.type == 'notes'">
+                <textarea ng-model="session.currentNotes"
+                          ng-change="session.currentQuestion = item.label"
+                          class="form-control wide"></textarea>
+            </div>
+
+            <div ng-if="item.type == 'textfield'">
+                <input type="text" ng-model="session.currentNotes"
+                          ng-change="session.currentQuestion = item.label"
+                          class="form-control"></input>
+            </div>
+
+            <div ng-if="item.type == 'number'">
+                <input type="number" ng-model="session.currentNotes"
+                       ng-change="session.currentQuestion = item.label"
+                       class="form-control"></input>
+            </div>
+        <footer class="footer text-right align-right">
+        <button ng-disabled="session.disableNext(item.choices, item.label)"
+                class="btn  btn-session-continue"
+                ng-click="session.next($index, item.label)"><i class="glyphicon glyphicon-chevron-right"></i></button>
+        </footer>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div ng-show="session.currentSessionComplete">
+    <div class="jumbotron text-center top-buffer20">
+        <h2>Your Session is Complete - Thanks!</h2>
+        <a href="#/home" class="btn btn-primary">Go Home</a>
+    </div>
+</div>

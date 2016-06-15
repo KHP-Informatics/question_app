@@ -1,0 +1,15 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+- '5.2.0'
+cache:
+  directories:
+    - node_modules
+notifications:
+  slack:
+    secure: FiJL0lbzBTVOfqZw3DdWvMdgJVPVLsOA2LbUmFkArwIFMc2p3et5nalDRATFwmrN15Hhijy8kwb7n0tVNE00hPiRtPtZ5/KEDUyW9nz23Ve1hFrITIKGDurvi4ihhvoaMnwjA63IbW9yzBAqP89qFUFJ5P1rj/CA38PFSJ8bvl0oB8v973AXvZyfsVXb7kmgGkmHK0lxaOk/MFcLBbwuqtUED8hPVewrOFVfzZe3drPUCdbV/ZjkEPVJGck3f3WyuSkkA1jDa9izjxD9gTbw2vrL/JkcODrikkEPq2ah5tZcw3PjSTNFUauqo0ald5pylP0KrY0zPhO1eIMxkqm/nR5XP0vWHyThvbN3c0OrooZtGwUw5zA1+pS8mFwyg7YKg9XRFFURltKZNWObTMLy4icd5NDKoH1MEUVSMxZAwsY8PGoSkDGlqZS8q+LoqAx04pLpT2PCtkziV2ixPOBzBFe/AOmed17Y7+aIR0nS3IeprEzeHsnkpaPMKtqINRlxuEJR3iTRB3zVw05ERGeHGfHbR9ep9m60gSGoSWnZp18xw/0JB1rjV/b4nYtgIzV/duZa99DSYwOb2lOhXsokWqIuM1KZQ+BwKqPOJAPa5wjVMMh/GjH9vLUST7Biyy1oVQinEQyZIJY1LJTL0n24Ab4NqECCS0UBpsBc6qYGmFo=
+before_script:
+- export "PHANTOMJS_BIN=`which phantomjs`"
+script:
+- npm run test

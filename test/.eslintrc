@@ -1,0 +1,29 @@
+{
+  'globals': {
+    '__dirname': true,
+    'after': true,
+    'afterEach': true,
+    'angular': true,
+    'before': true,
+    'beforeEach': true,
+    'chai': true,
+    'describe': true,
+    'exports': true,
+    'inject': true,
+    'it': true,
+    'module': true,
+    'moment': true,
+    'require': true,
+    'sinon': true,
+    'localStorage': true,
+    'console': true
+  },
+  'rules': {
+    'quotes': [1, 'single'],
+    'strict': [2, "global"],
+    'no-unused-expressions': [0],
+    'no-console': 0,
+    'no-use-before-define': 0,
+    "no-multiple-empty-lines": [2, {"max": 2}]
+  }
+}

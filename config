@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="edu.northwestern.cbits.sis" version="0.16.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SiS</name>
+    <description>
+        An application to aid in the cessation of smoking cigarettes.
+    </description>
+    <author email="eric.schlange@northwestern.edu" href="http://www.cbits.northwestern.edu">
+        Eric Schlange
+    </author>
+    <content src="index.html" />
+    <access origin="ACCESS_ORIGIN" />
+    <icon src="res/icon.png" />
+
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.2dev" />
+</widget>

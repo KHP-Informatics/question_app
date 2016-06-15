@@ -1,0 +1,152 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-show="risky.riskyTimes && risky.riskyTimes.length > 0" ng-click="risky.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h3>Your Risky Times</h3>
+</div>
+
+<div class="modal-body">
+    <h4>These are times you have indicated you might have particular trouble abstaining from smoking:</h4>
+
+    <div class="well modal-well">
+        <span ng-if="!risky.riskyTimes || risky.riskyTimes.length === 0">Add risky times below.</span>
+        <div class="container-fluid risky-time-view">
+            <div class="row-fluid" ng-repeat="(key, value) in risky.riskyTimes">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 scrub-padding top-buffer5">
+                    <div><strong>{{ (value.time | date:'h:mm a - EEEE (MM/dd/yyyy)') }}</strong></div>
+                    <div>{{value.description}}</div>
+                    <div><em>Strategy: {{ value.strategy || 'none' }}</em></div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 scrub-padding top-buffer5" >
+                    <a title="edit" class="btn btn-sm btn-info"
+                       ng-click="risky.openEditModal(value.time, value.description, value.strategy, key, value.notificationId)">
+                        <i class="glyphicon glyphicon-pencil glyphicon-sm"></i>
+                    </a>
+                    <a title="delete" class="btn btn-sm btn-info" ng-click="risky.deleteRiskyTime(value.id, value.notificationId)">
+                        <i class="glyphicon glyphicon-remove glyphicon-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>Choose a date and time of day</h4>
+    <input id="risky_time_time" type="risky_time_time" name="risky_time_time" ng-model="risky.riskyTime.time" mobiscroll-datetime />
+
+    <h4>How often does this happen?</h4>
+    <label class="btn btn-default top-buffer5">
+        <div><input class="frequency-input" ng-model="risky.frequency" type="radio" ng-value="risky.FREQUENCY_ONCE">Once</div>
+    </label>
+
+    <label class="btn btn-default top-buffer5">
+        <div><input class="frequency-input" ng-model="risky.frequency" type="radio" ng-value="risky.FREQUENCY_DAILY">Daily</div>
+    </label>
+
+    <label class="btn btn-default top-buffer5">
+        <div><input class="frequency-input" ng-model="risky.frequency" type="radio" ng-value="risky.FREQUENCY_WEEKLY">Weekly</div>
+    </label>
+
+    <h4>Describe this situation</h4>
+    <textarea ng-model="risky.riskyTime.description" class="form-control" name="reason" placeholder="e.g. people are smoking during break"></textarea>
+
+    <h4>What strategy will you use?</h4>
+    <select class="selectpicker form-control" ng-model="risky.riskyTime.strategy">
+        <option disabled="disabled" class="risky-select-header">negative emotions</option>
+        <option>exercise</option>
+        <option>socialize</option>
+        <option>do something pleasant</option>
+        <option>do something kind</option>
+        <option>distract yourself</option>
+        <option>remember self-care</option>
+
+        <option disabled="disabled">-----------</option>
+
+        <option disabled="disabled" class="risky-select-header">positive emotions</option>
+        <option>treat yourself</option>
+        <option>savor</option>
+        <option>share your happiness</option>
+        <option>realize there is plenty more</option>
+
+        <option disabled="disabled">-----------</option>
+
+        <option disabled="disabled" class="risky-select-header">social situations</option>
+        <option>say "no, thanks"</option>
+        <option>enlist a friend to help</option>
+        <option>be elsewhere</option>
+        <option>keep your hands busy</option>
+        <option>stay inside</option>
+        <option>realize you are helping others</option>
+        <option>plan smoke-free outings</option>
+
+        <option disabled="disabled">-----------</option>
+
+        <option disabled="disabled" class="risky-select-header">drinking alcohol</option>
+        <option>avoid drinking</option>
+        <option>trash the smoking supplies</option>
+        <option>enlist friends' help</option>
+        <option>stay inside</option>
+        <option>arrange for activities</option>
+
+        <option disabled="disabled">-----------</option>
+
+        <option disabled="disabled" class="risky-select-header">habitual smoking</option>
+        <option>change your routine</option>
+        <option>change what you do right after</option>
+        <option>use mints</option>
+        <option>chew on something</option>
+
+        <option disabled="disabled">-----------</option>
+
+        <option disabled="disabled" class="risky-select-header">wanting something to do with your hands</option>
+        <option>bring something else</option>
+        <option>make coffee or tea</option>
+        <option>use hand lotion</option>
+        <option>engage in an activity</option>
+    </select>
+
+    <br>
+
+    <button id="help_examples" class="btn btn-primary btn-sm wide top-buffer5" ng-click="risky.showHelpCategories()"><div class="text-transform-default">help me choose a strategy</div></button><br/>
+</div>
+
+<div class="modal-footer">
+    <p>{{risky.instructionContent}}</p>
+    <a id="save_button"
+       class="btn btn-info"
+       ng-disabled="!risky.riskyTime.time || !risky.riskyTime.description || !risky.riskyTime.strategy"
+       ng-click="risky.saveRiskyTime()">Save</a>
+    <a id="exit_button"
+       class="btn btn-danger"
+       ng-show="risky.isModal"
+       ng-click="risky.cancel()">Done</a>
+</div>
+
+
+<script type="text/javascript">
+    $("#risky_time_time").mobiscroll().time();
+</script>
+
+
+<script type="text/ng-template" id="risky_time_strategy_help_categories.html">
+    <div class="modal-header">
+        <h3 style="text-transform: capitalize;">Strategies</h3>
+    </div>
+    <div class="modal-body">
+        <div ng-repeat="item in strategyTypes">
+            <button id="strategy_types" class="btn btn-primary btn-sm wide top-buffer5" ng-click="showStrategyHelp(item)">{{ item }}<br/></button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="risky_time_strategy_help_details.html">
+    <div class="modal-header">
+        <h3 style="text-transform: capitalize;">{{ title }}</h3>
+    </div>
+    <div class="modal-body">
+        <div ng-bind-html="description"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>

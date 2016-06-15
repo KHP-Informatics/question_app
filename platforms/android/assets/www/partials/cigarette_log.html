@@ -1,0 +1,56 @@
+<div id="app-container">
+    <div class="container">
+        <h2>Cigarette Log</h2>
+
+        <!-- START TIME -->
+        <button ng-click="cigarette.setTiming(true)"
+                ng-show="cigarette.state === cigarette.STATE_TIMING"
+                class="btn btn-lg btn-info top-buffer20"
+                tabindex="0">
+            I'm smoking now...
+        </button>
+        <br>
+        <button ng-click="cigarette.setTiming(false)"
+                ng-show="cigarette.state === cigarette.STATE_TIMING"
+                class="btn btn-lg btn-info top-buffer20"
+                tabindex="1">
+            I forgot to enter a cigarette...
+        </button>
+        <!-- END TIME -->
+
+        <!-- START REASON -->
+        <div ng-show="cigarette.state == cigarette.STATE_REASON">
+            <h4>Why did you smoke this cigarette?</h4>
+            <div class="row-fluid" ng-repeat="value in cigarette.SMOKING_REASONS">
+                <label><input type="radio" ng-model="cigarette.cigaretteLog[cigarette.SMOKING_REASON]" value="{{value}}"> {{ value }}</label>
+            </div>
+            <button ng-show="cigarette.cigaretteLog[cigarette.SMOKING_REASON]"
+                    class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="cigarette.setState(cigarette.STATE_URGE)">Continue</button>
+        </div>
+        <!-- END REASON -->
+
+        <!-- START URGE -->
+        <div ng-show="cigarette.state === cigarette.STATE_URGE">
+            <h4>How strong was your urge to smoke?</h4>
+            <select class="form-control" ng-model="cigarette.cigaretteLog[cigarette.URGE_STRENGTH]">
+                <option ng-repeat="(index, value) in ['1 - lowest','2','3','4','5','6','7','8','9','10 - highest']"
+                        value="{{ index + 1 }}">
+                    {{ value }}
+                </option>
+            </select>
+            <button ng-show="cigarette.cigaretteLog[cigarette.URGE_STRENGTH]"
+                    class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="cigarette.setState(cigarette.STATE_FINAL)">Continue</button>
+        </div>
+        <!-- END URGE -->
+
+        <div ng-show="cigarette.state === cigarette.STATE_FINAL">
+            <h3>Thanks for letting us know!</h3>
+            <a class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+               ng-click="cigarette.saveCigaretteLog()">
+                Save
+            </a>
+        </div>
+    </div>
+</div>

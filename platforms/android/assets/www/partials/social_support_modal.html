@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button type="button"
+            class="close"
+            ng-show="social.hasSocialSupports()"
+            ng-click="social.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h3>Your Social Support</h3>
+</div>
+
+<div class="modal-body">
+    <h4>Identify the people who can support you in your quit attempt:</h4>
+
+    <div class="well modal-well">
+        <span ng-hide="social.hasSocialSupports()">Add additional social supports below.</span>
+        <div class="container-fluid social-support-view">
+            <div class="row-fluid" ng-repeat="(key, value) in social.socialSupports">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 cessation-reason-row">
+                    <div><strong>{{value.name}}</strong></div>
+                    <div><em>{{value.reason}}</em></div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cessation-reason-row" >
+                    <a title="delete" class="btn btn-sm btn-info" ng-click="social.deleteSocialSupport(value.id)">
+                        <i class="glyphicon glyphicon-remove glyphicon-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Add a social support:</h3>
+    <div class="form-group">
+        <label for="name">Name the person</label>
+        <input ng-model="social.socialSupport.name" class="form-control" name="name" id="name" placeholder="John Smith" />
+    </div>
+    <div class="form-group">
+        <label for="reason">How this person will support me</label>
+        <select multiple ng-model="social.socialSupport.reason" class="form-control" id="reason" name="reason">
+            <option ng-repeat="reason in social.socialSupportReasons" value="{{reason.reason}}">
+                {{reason.summary}}
+            </option>
+        </select>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <p>{{social.instructionContent}}</p>
+    <a id="save_button"
+       class="btn btn-info"
+       ng-disabled="!social.socialSupport.name"
+       ng-click="social.saveSocialSupport()">Save</a>
+    <a id="exit_button"
+       class="btn btn-danger"
+       ng-show="social.isModal"
+       ng-click="social.cancel()">Done</a>
+</div>
+
+
+

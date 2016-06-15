@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test'em</title>
+    <link rel="stylesheet" href="/testem/mocha.css">
+    <script src="/testem/mocha.js"></script>
+    <script src="/testem/chai.js"></script>
+    <script src="/testem.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script type="text/javascript" src="../src/vendor/js/jquery-2.1.4.min.js"></script>
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/angular-route/angular-route.js"></script>
+    <script src="../node_modules/angular-resource/angular-resource.js"></script>
+    <script src="../node_modules/angular-mocks/angular-mocks.js"></script>
+    <script src="../node_modules/moment/moment.js"></script>
+    <script src="../src/vendor/js/mobiscroll.custom-2.16.0.min.js"></script>
+    <script src="../src/vendor/js/ui-bootstrap-tpls-0.13.3.min.js"></script>
+
+    <script src="support/sinon.js"></script>
+
+    <!-- test coverage -->
+    <script src="support/blanket.min.js"></script>
+    <script src="support/mocha-blanket.js"></script>
+
+    <script data-cover src="../src/js/Application.js"></script>
+    <script data-cover src="../src/js/constants/Routes.js"></script>
+    <script data-cover src="../src/js/controllers/SessionsController.js"></script>
+
+    <script data-cover src="../src/js/resources/AuthenticationToken.js"></script>
+    <script data-cover src="../src/js/resources/Payloads.js"></script>
+    <script data-cover src="../src/js/resources/Settings.js"></script>
+    <script data-cover src="../src/js/caches/AuthenticationTokenCache.js"></script>
+
+    <script data-cover src="../src/js/services/CessationDate.js"></script>
+    <script data-cover src="../src/js/caches/CessationDateCache.js"></script>
+    <script data-cover src="../src/js/services/CessationReason.js"></script>
+    <script data-cover src="../src/js/caches/CessationReasonCache.js"></script>
+    <script data-cover src="../src/js/services/RiskyTime.js"></script>
+    <script data-cover src="../src/js/caches/RiskyTimeCache.js"></script>
+    <script data-cover src="../src/js/services/SocialSupport.js"></script>
+    <script data-cover src="../src/js/caches/SocialSupportCache.js"></script>
+
+    <script data-cover src="../src/js/services/Session.js"></script>
+    <script data-cover src="../src/js/services/SessionAnswer.js"></script>
+    <script data-cover src="../src/js/services/SessionQuestion.js"></script>
+    <script data-cover src="../src/js/caches/SessionsCache.js"></script>
+    
+    <script src="unit/controllers/SessionsControllerSpec.js"></script>
+
+    <!-- ensure that the Blanket.js results are visible above the Test'em logo -->
+    <style>
+      body {
+        padding-bottom: 45px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="mocha"></div>
+    <script>
+      mocha.run()
+    </script>
+  </body>
+</html>

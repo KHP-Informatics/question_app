@@ -1,0 +1,40 @@
+<div id="app-container">
+    <div class="container">
+        <h2>Temptation Log</h2>
+
+        <!-- START REASON -->
+        <div ng-show="temptation.state === temptation.STATE_REASON">
+            <h4>Why are you tempted to smoke?</h4>
+            <div class="row-fluid" ng-repeat="(index, value) in temptation.TEMPTATION_REASONS">
+                <label><input type="radio" ng-model="temptation.temptationLog[temptation.TEMPTATION_REASON]" value="{{value}}"> {{ value }}</label>
+            </div>
+            <button ng-show="temptation.temptationLog[temptation.TEMPTATION_REASON]"
+                    class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="temptation.setState(temptation.STATE_URGE)">Continue</button>
+        </div>
+        <!-- END REASON -->
+
+        <!-- START URGE -->
+        <div ng-show="temptation.state === temptation.STATE_URGE">
+            <h4>How strong is your urge to smoke?</h4>
+            <select class="form-control" ng-model="temptation.temptationLog[temptation.URGE_STRENGTH]">
+                <option ng-repeat="(index, value) in ['1 - lowest','2','3','4','5','6','7','8','9','10 - highest']"
+                        value="{{ index + 1 }}">
+                    {{ value }}
+                </option>
+            </select>
+            <button ng-show="temptation.temptationLog[temptation.URGE_STRENGTH]"
+                    class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="temptation.setState(temptation.STATE_FINAL)">Continue</button>
+        </div>
+        <!-- END URGE -->
+
+        <div ng-show="temptation.state === temptation.STATE_FINAL">
+            <h3>Thanks for letting us know!</h3>
+            <a class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+               ng-click="temptation.saveTemptationLog()">
+                Save
+            </a>
+        </div>
+    </div>
+</div>

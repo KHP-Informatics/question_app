@@ -1,0 +1,137 @@
+<div id="app-container">
+    <div class="container">
+
+        <div ng-show="!exercise.hideNav">
+            <h2>Happiness Exercises</h2>
+            <h3>Here are the actions you can take regarding your happiness exercises:</h3>
+
+            <h4>Complete today's exercise:</h4>
+            <button class="btn btn-lg btn-primary wide"
+                    ng-click="exercise.hideNav = true;">
+                {{ exercise.todaysExercise.exerciseName }}
+            </button><br/><br/>
+
+            <h4>Browse through your previously submitted happy moments</h4>
+             <a ng-click="exercise.showExerciseReview()" class="btn btn-lg btn-primary wide">
+                Your Past Entries
+            </a>
+
+
+            <h3>Look at a graph of your day-to-day happiness over time</h3>
+             <a ng-href="#/happiness_history" class="btn btn-lg btn-primary wide">
+                View Graph
+            </a>
+            <br/><br/>
+        </div>
+        <div ng-show="exercise.hideNav">
+            <h2>{{ exercise.todaysExercise.exerciseName }}</h2>
+            <h3>{{ exercise.todaysExercise.description }}</h3>
+
+            <div class="form-group" ng-repeat="(key, value) in exercise.getTodaysExercise().instructions">
+              <textarea class="form-control daily-exercise wide"
+                        name="answer_{{ key }}"
+                        ng-model="exercise.todaysExerciseAnswers[key].answer"
+                        placeholder="{{ value.instruction }}"></textarea>
+            </div>
+
+            <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>save complete</strong>
+            </div>
+
+            <a id="save_button"
+               class="btn btn-info"
+               ng-click="exercise.saveExerciseAnswers()">Save</a>
+            <a id="exit_button"
+               class="btn btn-danger"
+               href="#/home">Exit</a>
+            <br/><br/>
+
+            <button id="help_examples" class="btn btn-primary btn-sm wide top-buffer5" ng-click="exercise.showHelp('examples')"><div class="text-transform-default">Examples</div></button><br/>
+            <button id="help_happiness" class="btn btn-primary btn-sm wide top-buffer5" ng-click="exercise.showHelp('happiness')"><div class="text-transform-default">How does happiness help me quit smoking?</div></button><br/>
+            <button id="help_exercise" class="btn btn-primary btn-sm wide top-buffer5 btn-happiness-continue" ng-click="exercise.showHelp('exercise')"><div class="text-transform-default">How does this exercise help me quit smoking?</div></button><br/>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready (function() {
+        $("#success-alert").hide();
+        $("#save_button").click(function() {
+            $("#success-alert").show().fadeTo(2000, 500).slideUp(500, function(){
+                $("#success-alert").hide();
+            });
+        });
+    });
+</script>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+    <h3 style="text-transform: capitalize;">{{title}}</h3>
+    </div>
+    <div class="modal-body">   
+        <div ng-if="type === 'happiness'">
+            Feeling happy and generally positive will:
+        </div>
+        <ul ng-if="items.length > 1">
+            <li ng-repeat="item in items">
+                {{item}}
+            </li>
+        </ul>
+        <div ng-if="items.length === 1">{{items[0]}}</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="exerciseReview.html">
+    <div class="modal-header">
+        <h3 style="text-transform: capitalize;">Exercise Review</h3>
+    </div>
+    <div class="modal-body container">
+        <h3>Three Good Things</h3>
+        <div class="well" ng-show="{{(exercises | filter:{exerciseName: 'Three Good Things'}).length == 0}}">not used yet</div>
+        <div class="row" ng-repeat="exercise in exercises | orderBy:'-' | filter:{exerciseName: 'Three Good Things'}">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <div><strong>{{ (exercise.exerciseDay | date:'(MM/dd/yyyy)') }}</strong></div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <ul class="exercise-list">
+                    <li ng-if="!answers || answers.length === 0">No answers provided</li>
+                    <li ng-repeat="answer in answers | filter:{ exerciseId: exercise.id } ">{{ answer.answer }}</li>
+                </ul>
+            </div>
+        </div>
+        <h3>Experiencing Kindness</h3>
+        <div class="well" ng-show="{{(exercises | filter:{exerciseName: 'Experiencing Kindness'}).length == 0}}">not used yet</div>
+        <div class="row" ng-repeat="exercise in exercises | orderBy:'-' | filter:{exerciseName: 'Experiencing Kindness'}">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <div><strong>{{ (exercise.exerciseDay | date:'(MM/dd/yyyy)') }}</strong></div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <ul class="exercise-list">
+                    <li ng-if="!answers || answers.length === 0">No answers provided</li>
+                    <li ng-repeat="answer in answers | filter:{ exerciseId: exercise.id } ">{{ answer.answer }}</li>
+                </ul>
+            </div>
+        </div>
+        <h3>Savoring</h3>
+        <div class="well" ng-show="{{(exercises | filter:{exerciseName: 'Savoring'}).length == 0}}">not used yet</div>
+        <div class="row" ng-repeat="exercise in exercises | orderBy:'-' | filter:{exerciseName: 'Savoring'}">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <div><strong>{{ (exercise.exerciseDay | date:'(MM/dd/yyyy)') }}</strong></div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrub-padding top-buffer5">
+                <ul class="exercise-list">
+                    <li ng-if="!answers || answers.length === 0">No answers provided</li>
+                    <li ng-repeat="answer in answers | filter:{ exerciseId: exercise.id } ">{{ answer.answer }}</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>

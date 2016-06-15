@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <button type="button"
+            class="close"
+            ng-show="reasons.cessationReasons.length > 0"
+            ng-click="reasons.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h3>Why do you want to quit smoking?</h3>
+</div>
+
+<div class="modal-body">
+<h4>These are the reasons for which you wish to quit smoking:</h4>
+
+<div class="well modal-well">
+    <span ng-if="!reasons.cessationReasons || reasons.cessationReasons.length === 0">Enter your personal reasons for quitting smoking</span>
+    <div class="container-fluid cessation-reasons-view">
+        <div class="row-fluid" ng-repeat="(key, value) in reasons.cessationReasons">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 cessation-reason-row">
+                <div>{{value.description}}</div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 cessation-reason-row" >
+                <a title="delete" class="btn btn-sm btn-info" ng-click="reasons.deleteCessationReason(value.id)">
+                    <i class="glyphicon glyphicon-remove glyphicon-sm"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>Add a reason:</h3>
+<h4>Why do you need to quit smoking?</h4>
+
+<textarea ng-model="reasons.cessationReason.description" class="form-control" name="reason" placeholder="e.g. I want to be healthy."></textarea>
+</div>
+
+<div class="modal-footer">
+    <p>{{reasons.instructionContent}}</p>
+    <a id="save_button"
+       class="btn btn-info"
+       ng-disabled="!reasons.cessationReason.description"
+       ng-click="reasons.saveCessationReason()">Save</a>
+    <a id="exit_button"
+       class="btn btn-danger"
+       ng-show="reasons.isModal"
+       ng-click="reasons.cancel()">Done</a>
+</div>
+
+
+

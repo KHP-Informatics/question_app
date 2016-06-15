@@ -1,0 +1,11 @@
+<div id="app-container">
+    <div class="container">
+        <h2>Update Your Smoking Status</h2>
+        <div ng-repeat="(index, value) in smoking.smokingStatusDescriptions">
+            <button class="btn btn-lg btn-primary" ng-click="smoking.saveSmokingStatus(value)">
+                {{ value }}
+            </button>
+            <br><br>
+        </div>
+    </div>
+</div>

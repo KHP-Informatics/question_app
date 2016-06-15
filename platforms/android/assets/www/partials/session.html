@@ -1,0 +1,111 @@
+<script type="text/javascript" src="vendor/js/mobiscroll.custom-2.16.0.min.js"></script>
+
+<div ng-hide="session.getSessionContent()">
+    <h2>Loading Session Content</h2>
+</div>
+
+<div ng-hide="session.getSessionStarted()" ng-init="session.getContentAndStartSession()">
+    <div class="jumbotron text-center top-buffer20">
+        <p>Ready to begin?</p>
+        <button ng-click="" class="btn btn-primary">Start Now</button>
+    </div>
+</div>
+
+<div ng-show="session.getSessionStarted()">
+    <div ng-repeat="item in session.getSessionContent()">
+        <div ng-show="session.questionVisible(item.branching_logic,item.evaluatedLogic,$index)" id="question-{{$index}}">
+            <div class="question well top-buffer20" ng-bind-html="session.convertHtmlContent(item.label)"></div>
+
+            <!-- START CONFIGURATION INTEGRATION POINTS -->
+            <div ng-show="session.containsCessationReasonsIntegration(item.label)">
+                <a class="btn btn-info"
+                   ng-click="session.openCessationReasonsModal()">
+                    Click here to add reason to quit
+                </a>
+            </div>
+
+            <div ng-show="session.containsRiskyTimesIntegration(item.label)">
+                <a class="btn btn-info"
+                   ng-click="session.openRiskyTimesModal()">
+                    Click here to add times in which you may have difficulty resisting the urge to smoke
+                </a>
+            </div>
+
+            <div ng-show="session.containsSocialSupportIntegration(item.label)">
+                <a class="btn btn-info"
+                   ng-click="session.openSocialSupportModal()">
+                    Click here to add social supports
+                </a>
+            </div>
+
+            <div ng-show="session.containsCessationDateIntegration(item.label)">
+                <div ng-hide="session.cessationDate">
+                    <a id="cessation_date_selector"
+                       class="btn btn-info"
+                       onclick="$('#cessation_date_input').click()">
+                        Click here to schedule your quit day
+                    </a>
+                </div>
+                <div ng-show="session.cessationDate">
+                    <strong> Cessation date scheduled for: {{ session.cessationDate.cessationDay | date:"MM/dd/yyyy" }} </strong>
+                </div>
+                 <div ng-show="session.cessationDate">
+                    <em>* You can update this after the session is complete through the configurations menu.</em>
+                </div>
+            </div>
+
+            <!-- END CONFIGURATION INTEGRATION POINTS -->
+
+            <div ng-if="item.type == 'radio' || item.type == 'checkbox'"
+                 class="{{item.type}}"
+                 ng-repeat="choice in item.choices">
+
+                <label class="btn btn-info col-md-12 col-sm-12 col-xs-12 top-buffer5">
+                    <div class="col-sm-1 col-xs-1 col-md-1 text-left">
+                        <input ng-click="session.makeSelection(item.label, choice)" type="{{item.type}}" name="{{item.variable}}" value="{{$index+1}}">
+                    </div>
+                    <div class="col-md-10 col-xs-10 col-sm-10 text-left session-option">{{session.stripIntegrationPoints(choice)}}</div>
+                </label>
+            </div>
+            <div class="clearfix"></div>
+
+            <div ng-if="item.type == 'notes'">
+                <textarea ng-model="session.currentNotes"
+                          ng-change="session.currentQuestion = item.label"
+                          class="form-control wide"></textarea>
+            </div>
+
+            <div ng-if="item.type == 'textfield'">
+                <input type="text" ng-model="session.currentNotes"
+                          ng-change="session.currentQuestion = item.label"
+                          class="form-control"></input>
+            </div>
+
+            <div ng-if="item.type == 'number'">
+                <input type="number" ng-model="session.currentNotes"
+                       ng-change="session.currentQuestion = item.label"
+                       class="form-control"></input>
+            </div>
+
+            <button ng-disabled="session.disableNext(item.choices, item.label, item.required)"
+                    class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20 btn-session-continue"
+                    ng-click="session.next($index, item.label)">Continue</button>
+        </div>
+    </div>
+</div>
+
+<input id="cessation_date_input"
+       type="text"
+       ng-model="session.cessationDate.cessationDay"
+       ng-change="session.setCessationDate()" mobiscroll-date />
+
+<div ng-show="session.currentSessionComplete">
+    <div class="jumbotron text-center top-buffer20">
+        <h2>Your Session is Complete - Thanks!</h2>
+        <a href="#/home" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#cessation_date_input").mobiscroll().date();
+</script>

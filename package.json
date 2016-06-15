@@ -1,0 +1,61 @@
+{
+  "name": "SisApp",
+  "version": "0.0.1",
+  "description": "Client for asking questions made by CBITs/MSS",
+  "author": "Mark Begale",
+  "contributors": [
+    {
+      "name": "Mark Begale",
+      "email": "m-begale@northwestern.edu"
+    }, {
+      "name": "Michael Bass",
+      "email": "bass@northwestern.edu"
+    }
+  ],
+  "dependencies": {
+    "angular": "^1.4.0",
+    "angular-resource": "^1.4.0",
+    "angular-route": "^1.4.0",
+    "cordova": "5.3.1",
+    "font-awesome": "^4.3.0",
+    "moment": "^2.10.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.4.0",
+    "chai": "^2.1.2",
+    "chai-as-promised": "^5.0.0",
+    "eslint": "^1.3.1",
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1",
+    "testem": "^0.8.0-0",
+    "wd": "^0.3.11"
+  },
+  "keywords": [
+    "smoking",
+    "cessation",
+    "study"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cbitstech/sis_app"
+  },
+  "scripts": {
+    "init": "npm install && npm_config_env=test npm_config_server=http://127.0.0.1:3000 npm run set_endpoint && npm run set_endpoint && npm run build:prepare && npm run browser:add_platform && npm run android:add_platform && npm run add_plugins",
+    "set_endpoint": "echo \"{\\\"environment\\\":\\\"$npm_config_env\\\",\\\"server\\\":\\\"$npm_config_server\\\"}\" > src/config.json && sed s%ACCESS_ORIGIN%$npm_config_server%g config > config.xml",
+    "android:add_platform": "./node_modules/.bin/cordova platform remove android && ./node_modules/.bin/cordova platform add android@4.0.0",
+    "android:build": "npm run build:prepare && npm run add_plugins && ./node_modules/.bin/cordova build android",
+    "android:simulator": "npm run android:build && ./node_modules/.bin/cordova run android",
+    "browser:add_platform": "./node_modules/.bin/cordova platform remove browser && ./node_modules/.bin/cordova platform add browser && npm run add_plugins",
+    "add_plugins": "./node_modules/.bin/cordova plugin remove org.apache.cordova.device; ./node_modules/.bin/cordova plugin add org.apache.cordova.device; ./node_modules/.bin/cordova plugin remove org.apache.cordova.network-information; ./node_modules/.bin/cordova plugin add org.apache.cordova.network-information; ./node_modules/.bin/cordova plugin remove https://github.com/apache/cordova-plugin-whitelist.git; ./node_modules/.bin/cordova plugin add https://github.com/apache/cordova-plugin-whitelist.git; ./node_modules/.bin/cordova plugin remove de.appplant.cordova.plugin.local-notification; ./node_modules/.bin/cordova plugin add de.appplant.cordova.plugin.local-notification@0.8.2;",
+    "browser:build": "npm run build:prepare && ./node_modules/.bin/cordova build browser",
+    "browser:simulator": "npm run browser:build && ./node_modules/.bin/cordova run browser",
+    "build:all": "npm run browser:build && npm run android:build",
+    "build:clean": "rm -rf www && mkdir -p www/js www/css",
+    "build:prepare": "[ ! -f src/config.json ] && echo '--- missing src/config.json ---\n--- configure a sis_dashboard server url with a variation of the following:\n--- npm_config_env=test npm_config_server=http://127.0.0.1:3000 npm run set_endpoint' && exit 1; npm run build:clean && npm run eslint:src && cp src/index.html www/ && mkdir www/content && cp src/content/* www/content/ && cp -r src/js/* www/js/ && cp -r src/css/* www/css/ && cp ./node_modules/angular/angular.min.js www/js/ && cp ./node_modules/angular-route/angular-route.min.js www/js/ && cp ./node_modules/angular-resource/angular-resource.min.js www/js/ && mkdir www/partials/ && cp -r src/partials/* www/partials/ && mkdir -p www/vendor/css/ && cp -r src/vendor/css/* www/vendor/css/ && mkdir -p www/vendor/js/ && cp -r src/vendor/js/* www/vendor/js/ &&  mkdir -p www/vendor/css/font-awesome/fonts && cp -r ./node_modules/font-awesome/fonts/* www/vendor/css/font-awesome/fonts && mkdir -p www/vendor/css/font-awesome/css && cp ./node_modules/font-awesome/css/font-awesome.min.css www/vendor/css/font-awesome/css && cp ./node_modules/moment/moment.js www/js/ && cp ./src/config.json ./www/config.json && mkdir -p www/vendor/font/ && cp -r src/vendor/font/* www/vendor/font/  && mkdir -p www/vendor/fonts/ && cp -r src/vendor/fonts/* www/vendor/fonts/ ",
+    "eslint": "./node_modules/.bin/eslint src && ./node_modules/.bin/eslint test",
+    "eslint:src": "./node_modules/.bin/eslint src",
+    "eslint:test": "./node_modules/.bin/eslint test",
+    "serve": "npm run build:prepare && ./node_modules/.bin/cordova run browser",
+    "test": "./node_modules/.bin/testem $TESTEM_ENV"
+  }
+}

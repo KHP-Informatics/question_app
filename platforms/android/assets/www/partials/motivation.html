@@ -1,0 +1,25 @@
+<div id="app-container">
+    <div class="container">
+        <h2>Challenging Time Reminder</h2>
+        <div>This is typically a time during which it's difficult for you not to smoke: How are you doing?</div>
+
+        <div ng-show="motivation.cessationReason">
+            <h4>Remember</h4>
+            <div>
+                <em>One of your reasons to stop smoking completely is:</em>
+            </div>
+            <div class="well">
+                {{ motivation.getRandomCessationReason().description }}
+            </div>
+        </div>
+
+        <div ng-show="motivation.getRiskyTime().strategy">
+            <h4>Have you tried ...?</h4>
+            <em>Here's the strategy you throught would help you at this specific time:</em>
+            <div class="well">{{ motivation.getRiskyTime().strategy }}</div>
+        </div>
+
+        <a class="btn btn-default" ng-click="motivation.openRiskyTimesModal()">Edit</a>
+        <a class="btn btn-default" href="#/home">Home</a>
+    </div>
+</div>

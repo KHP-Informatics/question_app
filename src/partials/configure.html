@@ -1,0 +1,10 @@
+<h3 class="text-info">Configuring application...</h3>
+
+
+<span ng-show="!config.hasConnection()">
+  <h3 class="text-error">Connection required for configuration</h3>
+
+  <button class="btn btn-primary" ng-click="config.refresh()">Refresh</button>
+</span>
+
+<h3 class="text-error" ng-if="config.alert">{{ config.alert }}</h3>

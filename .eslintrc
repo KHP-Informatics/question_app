@@ -1,0 +1,18 @@
+{
+  "globals": {
+    "angular": true,
+    "moment": true,
+    "sessionContent": true,
+    "$": true,
+    "window": true,
+    "document": true,
+    "self": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "no-eval": 0,
+    "no-unused-vars": 1,
+    "no-multiple-empty-lines": [2, {"max": 2}],
+    "strict": [2, "function"]
+  }
+}

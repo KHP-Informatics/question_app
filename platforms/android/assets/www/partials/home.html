@@ -1,0 +1,172 @@
+<div id="app-container">
+    <div id="home-title">
+        <h1>SiS</h1>
+    </div>
+
+    <div class="container">
+        <header id="smokingStatus" class="text-center before">
+            <div ng-if="home.cessationDayOffset() == undefined">
+                <span class="suffix">You have not set a quit date.</span>
+            </div>
+            <div ng-if="home.cessationDayOffset() < 0">
+                <span class="days">{{home.cessationDayOffsetAbs()}}</span>
+                <span class="suffix">
+                    <ng-pluralize count="home.cessationDayOffsetAbs()"
+                                  when="{'one': ' day since you quit!','other': ' days since you quit!'}">
+                    </ng-pluralize>
+                </span>
+            </div>
+            <div ng-if="home.cessationDayOffset() == 0">
+                <span class="suffix">It's Your Quit day!</span>
+            </div>
+            <div ng-if="home.cessationDayOffset() > 0">
+                <span class="days">{{home.cessationDayOffset()}}</span>
+                <span class="suffix">
+                    <ng-pluralize count="home.cessationDayOffset()"
+                                  when="{'one': ' day until quit day!','other': ' days until quit day!'}">
+                    </ng-pluralize>
+                </span>
+            </div>
+        </header>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 text-center">
+            <div ng-if="home.cessationDayOffset() != undefined" >
+                <a class="wide btn btn-primary btn-sm " href="#/smoking_status">
+                   Click Here to Update Your Status
+                </a>
+            </div>
+            <div ng-if="home.cessationDayOffset() == undefined" >
+                <a class="wide btn btn-primary btn-sm " href="#/set_up">
+                   Click Here to Set Up Your Quit Date
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row top-buffer10">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <a class="wide btn btn-info btn-lg-no-padding home-btn-height" href="#/session_sub_nav">
+                Smoking Cessation Tools
+            </a>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+
+            <a class="wide btn btn-info btn-lg-no-padding home-btn-height" href="#/exercise">
+                Happiness Exercise:<br/>
+                <span style="font-size:.8em; text-transform: none;">{{ home.todaysExercise.exerciseName }}</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div ng-if="home.todaysExerciseAnswers && home.todaysExerciseAnswers[0]" class="label label-lg label-success">
+                complete
+            </div>
+            <div ng-if="!home.todaysExerciseAnswers || !home.todaysExerciseAnswers[0]" class="label label-lg label-warning">
+                still due today
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div ng-if="home.todaysExerciseAnswers && home.todaysExerciseAnswers[1]" class="label label-lg label-success">
+                complete
+            </div>
+            <div ng-if="!home.todaysExerciseAnswers || !home.todaysExerciseAnswers[1]" class="label label-lg label-warning">
+                still due today
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div ng-if="home.todaysExercise.instructions &&
+                        home.todaysExercise.instructions[2] &&
+                        home.todaysExerciseAnswers &&
+                        home.todaysExerciseAnswers[2]" class="label label-lg label-success">
+                complete
+            </div>
+            <div ng-if="home.todaysExercise.instructions &&
+                        home.todaysExercise.instructions[2] &&
+                        (!home.todaysExerciseAnswers || !home.todaysExerciseAnswers[2])" class="label label-lg label-warning">
+                still due today
+            </div>
+        </div>
+    </div>
+
+    <div class="row top-buffer20">
+
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <a class="wide btn btn-info btn-lg-no-padding home-btn-height" href="#/session">
+                Smoking Cessation Sessions
+            </a>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <a class="wide btn btn-info btn-lg-no-padding home-btn-height" href="#/cigarette_log">
+                Cigarette Log
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div class="label label-lg label-success">
+                session 1 <i class="glyphicon glyphicon-check glyphicon-sm" ng-show="home.isSessionComplete(home.SESSION_ID_1)"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div class="label label-lg label-warning"
+                 ng-if="home.getCurrentSession() === home.CESSATION_SESSION_PRE">
+                session 2 in {{home.cessationDayOffsetAbs()}} days
+            </div>
+            <div class="label label-lg label-success"
+                 ng-if="home.getCurrentSession() !== home.CESSATION_SESSION_PRE">
+                session 2 <i class="glyphicon glyphicon-check glyphicon-sm" ng-show="home.isSessionComplete(home.SESSION_ID_2)"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+            <div class="label label-lg label-info"
+                 ng-if="home.cessationDayOffset() > home.CESSATION_SESSION_POST_DAY_OFFSET_PLURAL">
+                session 3 in {{home.cessationDayOffset() + home.CESSATION_SESSION_POST_DAY_OFFSET }} days
+            </div>
+            <div class="label label-lg label-warning"
+                 ng-if="home.cessationDayOffset() === home.CESSATION_SESSION_POST_DAY_OFFSET_SINGULAR">
+                session 3 in 1 day
+            </div>
+            <div class="label label-lg label-success"
+                 ng-if="home.cessationDayOffset() < home.CESSATION_SESSION_POST_DAY_OFFSET_SINGULAR">
+                session 3 <i class="glyphicon glyphicon-check glyphicon-sm" ng-show="home.isSessionComplete(home.SESSION_ID_3)"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row top-buffer20">
+        <div class="col-md-1 col-sm-1 col-lg-1 col-xs-1 text-center"></div>
+        <a href="#/ema">
+        <div ng-if="home.showEmaAlert()"
+             class="col-md-10 col-sm-10 col-lg-10 col-xs-10 text-center alert-info btn-ema-continue">
+                {{ home.emaNotificationRemainingTime() }} minutes left to complete this mini survey!
+        </div>
+        </a>
+       <!--  <div ng-if="!home.showEmaAlert()"
+             class="col-md-12 col-sm-12 col-lg-12 col-xs-12 text-center">
+            <a class="wide btn btn-survey btn-sm btn-ema-continue" href="#/ema?id={{lastEmaNotification.id}}">
+                click here to take a mini survey
+            </a>
+        </div> -->
+    </div>
+
+</div>

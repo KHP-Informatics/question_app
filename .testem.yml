@@ -1,0 +1,11 @@
+framework: mocha+chai
+launchers:
+  CI:
+    command: ./node_modules/.bin/mocha -R tap
+    protocol: tap
+launch_in_dev:
+  - Chrome
+launch_in_ci:
+  - PhantomJS
+test_page: test/runner.html
+before_tests: "npm run eslint"

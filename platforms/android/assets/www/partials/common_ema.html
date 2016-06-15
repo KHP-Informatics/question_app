@@ -1,0 +1,455 @@
+<div id="app-container">
+    <div class="container">
+        <div ng-show="ema.showCigaretteLogNavigation()">
+
+        <h3>Here's are the actions you can take regarding your cigarette log:</h3>
+
+            <h3>Log the cigarette(s) you just smoked</h3>
+            <button class="btn btn-lg btn-primary wide"
+                    ng-click="ema.showOneCigaretteLog()">
+                1 Cigarette
+            </button><br/><br/>
+
+            <button class="btn btn-lg btn-primary wide"
+                    ng-click="ema.showMultiCigaretteLog()">
+                2+ Cigarettes
+            </button><br/><br/><br/><br/>
+
+            <h3>Correct your cigarette log by entering a cigarette you forgot to enter when you smoked it</h3>
+            <!--history -->
+            <button class="btn btn-lg btn-primary wide"
+                    ng-click="ema.showHistoricalLog()">
+                Correct Log
+            </button>
+            <br/><br/>
+
+            <h3>Look at a graph of the cigarettes you smoked</h3>
+             <a ng-href="#/smoking_history" class="btn btn-lg btn-primary wide">
+                View Graph
+            </a>
+            <br/><br/>
+        </div>
+
+
+        <!-- START STATE_CIGARETTE_LOG_REASON -->
+        <div ng-show="ema.showCigaretteLog() === ema.questions.STATE_CIGARETTE_LOG_REASON ">
+
+            <h4 ng-hide="ema.ONE_CIGARETTE == true;">How many cigarettes have you smoked since your last log?</h4>
+            <input ng-hide="ema.ONE_CIGARETTE == true;" type="number" ng-model="ema.cigaretteCount">
+
+            <h4>Why did you smoke?</h4>
+
+            <select class="form-control"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('Why are you smoking this cigarette? (check one)?', ema.questions.STATE_CIGARETTE_LOG_DESIRE)">
+                <option ng-repeat="(index, value) in ['Reduce craving',
+                                                      'Soon going where I can’t smoke',
+                                                      'Cope with negative emotion',
+                                                      'Enhance positive emotion',
+                                                      'Habit/automatic',
+                                                      'Opportunity to socialize',
+                                                      'Break from work/studying',
+                                                      'Boredom/to kill time',
+                                                      'Other']" value="{{ value }}">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
+        <!-- END STATE_CIGARETTE_LOG_REASON -->
+
+        <!-- START STATE_CIGARETTE_LOG_DESIRE -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CIGARETTE_LOG_DESIRE">
+            <h4>How strong was your desire / urge to smoke?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ema.currentAnswer || 5}}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-model="ema.currentAnswer"
+                   ng-change="ema.saveQuestionAnswer('How strong was your desire / urge to smoke?',
+                                                     ema.questions.STATE_MOOD)">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['extremely weak','extremely strong']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- END STATE_CIGARETTE_LOG_DESIRE -->
+
+        <!-- START STATE_MOOD -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_MOOD">
+            <h2>MOOD:  Please tell us how you felt RIGHT BEFORE completing this report.</h2>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.happy }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                    ng-change="ema.updateChangeFromDefault(ema.moods)"
+                    ng-model="ema.moods.happy">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all happy','extremely happy']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.relaxed }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.moods)"
+                   ng-model="ema.moods.relaxed">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all relaxed','extremely relaxed']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.excited }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.moods)"
+                   ng-model="ema.moods.excited">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all excited','extremely excited']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.irritableAngryFrustrated }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1" 
+                   ng-change="ema.updateChangeFromDefault(ema.moods)"
+                   ng-model="ema.moods.irritableAngryFrustrated">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all angry/frustrated','extremely angry/frustrated']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.sad }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.moods)"
+                   ng-model="ema.moods.sad">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all sad','extremely sad']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.moods.worriedAnxious }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.moods)"
+                   ng-model="ema.moods.worriedAnxious">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all worried/anxious','extremely worried/anxious']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <button class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="ema.proceed(ema.questions.STATE_OTHER,ema.moods)">Continue</button>
+        </div>
+        <!-- END STATE_MOOD -->
+
+        <!-- START STATE_OTHER -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_OTHER" class="text-center">
+            <h2>OTHER STATES: Please tell us how you felt RIGHT BEFORE completing this report.</h2>
+            <div class="text-center">
+                <h4>feeling the desire / urge to smoke</h4>
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.otherStates.desire }}</h4></div>
+                <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                       ng-change="ema.updateChangeFromDefault(ema.otherStates)"
+                       ng-model="ema.otherStates.desire">
+                <table class="slider-response">
+                    <tr>
+                        <td ng-repeat="(index,value) in ['not at all','extremely']">
+                            <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                        </td>
+                    </tr>
+                </table><hr>
+
+                <h4>hungry</h4>
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.otherStates.hunger }}</h4></div>
+                <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                       ng-change="ema.updateChangeFromDefault(ema.otherStates)"
+                       ng-model="ema.otherStates.hunger">
+                <table class="slider-response">
+                    <tr>
+                        <td ng-repeat="(index,value) in ['not at all','extremely']">
+                            <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                        </td>
+                    </tr>
+                </table><hr>
+
+                <h4>bored</h4>
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.otherStates.bored }}</h4></div>
+                <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                       ng-change="ema.updateChangeFromDefault(ema.otherStates)"
+                       ng-model="ema.otherStates.bored">
+                <table class="slider-response">
+                    <tr>
+                        <td ng-repeat="(index,value) in ['not at all','extremely']">
+                            <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                        </td>
+                    </tr>
+                </table><hr>
+
+                <h4>difficulty concentrating</h4>
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.otherStates.concentration }}</h4></div>
+                <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                       ng-change="ema.updateChangeFromDefault(ema.otherStates)"
+                       ng-model="ema.otherStates.concentration">
+                <table class="slider-response">
+                    <tr>
+                        <td ng-repeat="(index,value) in ['not at all','extremely']">
+                            <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                        </td>
+                    </tr>
+                </table><hr>
+            </div>
+            <button class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                    ng-click="ema.proceed(ema.questions.STATE_THINKING,ema.otherStates)">Continue</button>
+        </div>
+
+        <!-- START STATE_THINKING -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_THINKING">
+            <h2>THINKING ABOUT SMOKING: Please tell us your thoughts on smoking.</h2>
+
+            <h4>RIGHT NOW: How <strong>CONFIDENT</strong> are you that you will be able to quit smoking / stay quit?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.thinking.confidence }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.thinking)"
+                   ng-model="ema.thinking.confidence">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all confident','extremely confident']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <h4>RIGHT NOW: How <strong>MOTIVATED</strong> are you to quit smoking / stay quit?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.thinking.motivation }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.thinking)"
+                   ng-model="ema.thinking.motivation">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all motivated','extremely motivated']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <h4>RIGHT NOW: Think about all the things you <strong>LIKE/LOVE</strong> about quitting / being smoke-free: taken together, how <strong>important</strong> are those things to you RIGHT NOW?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.thinking.like }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.thinking)"
+                   ng-model="ema.thinking.like">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all important','extremely important']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <h4>RIGHT NOW: Think about all the things you <strong>DISLIKE/HATE</strong> about quitting / being smoke-free: taken together, how <strong>important</strong> are those things to you RIGHT NOW?</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 text-center"><h4>{{ ema.thinking.dislike }}</h4></div>
+            <input type="range" string-to-number  class="form-control" min="0" max="10" step="1"
+                   ng-change="ema.updateChangeFromDefault(ema.thinking)"
+                   ng-model="ema.thinking.dislike">
+            <table class="slider-response">
+                <tr>
+                    <td ng-repeat="(index,value) in ['not at all important','extremely important']">
+                        <div ng-class="{0:'extreme-left', 1:'extreme-right'}[index]">{{value}}</div>
+                    </td>
+                </tr>
+            </table><hr>
+
+            <button class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20"
+                ng-click="ema.proceed(ema.questions.STATE_CONTEXT_INTRO,ema.thinking)">Continue</button>
+        </div>
+
+        <!-- START STATE_CONTEXT_INTRO -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_INTRO">
+            <h4>CONTEXT: Please tell us about your current context.</h4>
+            <button class="btn btn-primary" ng-click="ema.setState(ema.questions.STATE_CONTEXT_LOCATION)">OK</button>
+        </div>
+        <!-- END STATE_CONTEXT_INTRO -->
+
+        <!-- START STATE_CONTEXT_LOCATION -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_LOCATION">
+            <h4>Where are you?</h4>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('Where are you?', 'inside', ema.questions.STATE_CONTEXT_LOCATION_INSIDE)">inside</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('Where are you?', 'outside', ema.questions.STATE_CONTEXT_LOCATION_OUTSIDE)">outside</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('Where are you?', 'in transit', ema.questions.STATE_CONTEXT_ALONE)">in transit</button><br>
+        </div>
+        <!-- END STATE_CONTEXT_LOCATION -->
+
+        <!-- START STATE_CONTEXT_LOCATION_INSIDE -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_LOCATION_INSIDE">
+            <h4>Are you currently:</h4>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'In your apt / house /room', ema.questions.STATE_CONTEXT_ALONE)">In your apt / house /room</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'Another private residence', ema.questions.STATE_CONTEXT_ALONE)">Another private residence</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'At work', ema.questions.STATE_CONTEXT_ALONE)">At work</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'At school', ema.questions.STATE_CONTEXT_ALONE)">At school</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'In a public building (e.g., retail store, restaurant, bar)', ema.questions.STATE_CONTEXT_LOCATION_PUBLIC_BUILDING)">In a public building (e.g., retail store, restaurant, bar)</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(INSIDE) Are you currently:', 'Other', ema.questions.STATE_CONTEXT_ALONE)">Other</button><br>
+        </div>
+        <!-- END STATE_CONTEXT_LOCATION_INSIDE -->
+
+        <!-- START STATE_CONTEXT_LOCATION_PUBLIC_BUILDING -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_LOCATION_PUBLIC_BUILDING">
+            <h4>Are you currently:</h4>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'In a restaurant / bar', ema.questions.STATE_CONTEXT_ALONE)">In a restaurant / bar</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Retail store, mall', ema.questions.STATE_CONTEXT_ALONE)">Retail store, mall</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Movie theater, sports stadium', ema.questions.STATE_CONTEXT_ALONE)">Movie theater, sports stadium</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Public office (e.g., town hall, library)', ema.questions.STATE_CONTEXT_ALONE)">Public office (e.g., town hall, library)</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Transit station (e.g., train station, airport)', ema.questions.STATE_CONTEXT_ALONE)">Transit station (e.g., train station, airport)</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Hospital', ema.questions.STATE_CONTEXT_ALONE)">Hospital</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(PUBLIC) Are you currently:', 'Other', ema.questions.STATE_CONTEXT_ALONE)">Other</button><br>
+        </div>
+        <!-- END STATE_CONTEXT_LOCATION_PUBLIC_BUILDING -->
+
+        <!-- START STATE_CONTEXT_LOCATION_OUTSIDE -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_LOCATION_OUTSIDE">
+            <h4>Are you currently:</h4>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'In a designated smoking area', ema.questions.STATE_CONTEXT_ALONE)">In a designated smoking area</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'In a public park / green space / beach', ema.questions.STATE_CONTEXT_ALONE)">In a public park / green space / beach</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'Sporting venue (e.g., soccer field)', ema.questions.STATE_CONTEXT_ALONE)">Sporting venue (e.g., soccer field)</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'Your backyard / deck / private outside area', ema.questions.STATE_CONTEXT_ALONE)">Your backyard / deck / private outside area</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'Just outside a building / walking down the street', ema.questions.STATE_CONTEXT_ALONE)">Just outside a building / walking down the street</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'At a bus stop or train station', ema.questions.STATE_CONTEXT_ALONE)">At a bus stop or train station</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(OUTSIDE) Are you currently:', 'Other', ema.questions.STATE_CONTEXT_ALONE)">Other</button><br>
+        </div>
+        <!-- END STATE_CONTEXT_LOCATION_OUTSIDE -->
+
+        <!-- START STATE_CONTEXT_ALONE -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_ALONE">
+            <h4>Are you currently:</h4>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(SOCIAL) Are you currently:', 'alone', ema.questions.STATE_CONTEXT_WITNESS)">alone</button><br>
+            <button class="ema-button btn btn-primary" ng-click="ema.singleClickSaveAnswer('(SOCIAL) Are you currently:', 'with others', ema.questions.STATE_CONTEXT_WITH_OTHERS)">with others</button><br>
+        </div>
+        <!-- END STATE_CONTEXT_ALONE -->
+
+        <!-- START STATE_CONTEXT_WITH_OTHERS -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_WITH_OTHERS">
+            <h4>Check all that apply:</h4>
+            <div ng-repeat="(index, value) in [ 'Girlfriend/boyfriend/spouse/partner',
+                                                'Friend(s)',
+                                                'Co-worker',
+                                                'Classmate',
+                                                'Other person you know',
+                                                'family member',
+                                                'stranger(s)']" class="checkbox">
+                <label class="btn btn-primary ema-button">
+                    <input type="checkbox"
+                           ng-model="index"
+                           ng-change="ema.appendToCurrentAnswer('(SOCIAL) Check all that apply)', value, ema.questions.STATE_CONTEXT_CHILD)"
+                           value="{{value}}"
+                           name="company"> {{ value }}
+                    </label>
+            </div>
+        </div>
+        <!-- END STATE_CONTEXT_WITH_OTHERS -->
+
+        <!-- START STATE_CONTEXT_CHILD -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_CHILD">
+            <h4>Are you currently in the company of a child / children?</h4>
+            <select class="form-control"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('Are you currently in the company of a child / children?', ema.questions.STATE_CONTEXT_SOCIAL)">
+                <option ng-repeat="(index, value) in ['no',
+                                                      'yes']" value="{{ index }}">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
+        <!-- END STATE_CONTEXT_CHILD -->
+
+        <!-- START STATE_CONTEXT_SOCIAL -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_SOCIAL">
+            <h4>Are you at a social gathering?</h4>
+            <select class="form-control"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('Are you at a social gathering?', ema.questions.STATE_CONTEXT_WITNESS)">
+                <option ng-repeat="(index, value) in ['no',
+                                                      'yes']" value="{{ index }}">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
+        <!-- END STATE_CONTEXT_SOCIAL -->
+
+        <!-- START STATE_CONTEXT_WITNESS -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_WITNESS">
+            <h4>In the last 15 minutes, have you seen any of these people smoke? (check all that apply)</h4>
+            <div ng-repeat="(index, value) in [ 'Girlfriend/boyfriend/spouse/partner',
+                                                'Friend(s)',
+                                                'Co-worker',
+                                                'Classmate',
+                                                'Other person you know',
+                                                'family member',
+                                                'stranger(s)',
+                                                'none of the above']" class="checkbox">
+                <label class="btn btn-primary ema-button">
+                    <input type="checkbox" ng-model="index" ng-change="ema.appendToCurrentAnswer('In the last 15 minutes, have you seen any of these people smoke? (check all that apply)', value, ema.questions.STATE_CONTEXT_CONSUMPTION)"
+                           value="{{value}}" name="company"> {{ value }}<br>
+                </label>
+            </div>
+        </div>
+        <!-- END STATE_CONTEXT_WITNESS -->
+
+        <!-- START STATE_CONTEXT_CONSUMPTION -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_CONSUMPTION">
+            <h4>Check any of the following that you have consumed in the last hour:</h4>
+            <div ng-repeat="(index, value) in [ 'coffee',
+                                                'other caffeinated beverage',
+                                                'decaf coffee',
+                                                'other non-caffeinated beverage',
+                                                'alcohol',
+                                                'other intoxicating substance',
+                                                'none of the above']" class="checkbox">
+                <label class="btn btn-primary ema-button">
+                    <input type="checkbox" ng-model="index" ng-change="ema.intoxicationCheck('Check any of the following that you have consumed in the last hour:', value)"
+                           value="{{value}}" name="company"> {{ value }}<br>
+                </label>
+            </div>
+        </div>
+        <!-- END STATE_CONTEXT_CONSUMPTION -->
+
+        <!-- START STATE_CONTEXT_STATE_CONTEXT_INTOXICATION -->
+        <div ng-show="ema.currentQuestion === ema.questions.STATE_CONTEXT_INTOXICATION">
+            <h4>Are you intoxicated right now?</h4>
+            <select class="form-control"
+                    ng-model="ema.currentAnswer"
+                    ng-change="ema.saveQuestionAnswer('Are you intoxicated right now?', ema.questions.STATE_FINAL)">
+                <option ng-repeat="(index, value) in ['no',
+                                                      'yes']" value="{{ index }}">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
+        <!-- END STATE_CONTEXT_SOCIAL -->
+    </div>
+
+    <!-- START STATE_FINAL -->
+    <div ng-show="ema.currentQuestion == ema.questions.STATE_FINAL" class="btn-ema-continue">
+        <h4>Thank you!</h4>
+        <a ng-click="ema.emaComplete()" class="btn btn-primary btn-ema-continue">Go Back</a>
+    </div>
+    <!-- END STATE_FINAL -->
+
+    <div class="btn-ema-continue">
+        <button ng-show="ema.currentQuestion !== ema.questions.STATE_FINAL && ema.currentAnswer"
+                class="btn btn-primary col-md-12 col-sm-12 col-xs-12 top-buffer20 btn-ema-continue"
+                ng-click="ema.next()">Continue</button>
+    </div>
+
+</div>

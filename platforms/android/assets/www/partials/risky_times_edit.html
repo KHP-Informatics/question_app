@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <h3 class="modal-title">Editing Risky Time Strategy</h3>
+</div>
+<div class="modal-body">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>date</th>
+                <td><div>{{ (riskyEdit.riskyTimeDisplay | date:'h:mm a - EEEE (MM/dd/yyyy)') }}</div></td>
+            </tr>
+            <tr>
+                <th>description</th>
+                <td><div>{{riskyEdit.riskyTimeDescription}}</div></td>
+            </tr>
+            <tr>
+                <th>strategy</th>
+                <td>
+                    <select class="selectpicker form-control" ng-model="riskyEdit.riskyTimeStrategy">
+                        <option disabled="disabled" class="risky-select-header">negative emotions</option>
+                        <option>exercise</option>
+                        <option>socialize</option>
+                        <option>do something pleasant</option>
+                        <option>do something kind</option>
+                        <option>distract yourself</option>
+                        <option>remember self-care</option>
+
+                        <option disabled="disabled">-----------</option>
+
+                        <option disabled="disabled" class="risky-select-header">positive emotions</option>
+                        <option>treat yourself</option>
+                        <option>savor</option>
+                        <option>share your happiness</option>
+                        <option>realize there is plenty more</option>
+
+                        <option disabled="disabled">-----------</option>
+
+                        <option disabled="disabled" class="risky-select-header">social situations</option>
+                        <option>say "no, thanks"</option>
+                        <option>enlist a friend to help</option>
+                        <option>be elsewhere</option>
+                        <option>keep your hands busy</option>
+                        <option>stay inside</option>
+                        <option>realize you are helping others</option>
+                        <option>plan smoke-free outings</option>
+
+                        <option disabled="disabled">-----------</option>
+
+                        <option disabled="disabled" class="risky-select-header">drinking alcohol</option>
+                        <option>avoid drinking</option>
+                        <option>trash the smoking supplies</option>
+                        <option>enlist friends' help</option>
+                        <option>stay inside</option>
+                        <option>arrange for activities</option>
+
+                        <option disabled="disabled">-----------</option>
+
+                        <option disabled="disabled" class="risky-select-header">habitual smoking</option>
+                        <option>change your routine</option>
+                        <option>change what you do right after</option>
+                        <option>use mints</option>
+                        <option>chew on something</option>
+
+                        <option disabled="disabled">-----------</option>
+
+                        <option disabled="disabled" class="risky-select-header">wanting something to do with your hands</option>
+                        <option>bring something else</option>
+                        <option>make coffee or tea</option>
+                        <option>use hand lotion</option>
+                        <option>engage in an activity</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary"
+            type="button"
+            ng-click="riskyEdit.updateRiskyTimeStrategy()">OK</button>
+    <button class="btn btn-warning"
+            type="button"
+            ng-click="riskyEdit.cancel()">Cancel</button>
+</div>

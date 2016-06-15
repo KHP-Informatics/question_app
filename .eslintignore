@@ -1,0 +1,10 @@
+src/vendor/js/*.js
+src/vendor/*.js
+
+src/vendor/js/highstock/*.js
+src/vendor/js/highstock/adapter/*.js
+src/vendor/js/highstock/modules/*.js
+src/vendor/js/highstock/themes/*.js
+src/js/acceptance/helpers/*.js
+
+test/support/*.js
